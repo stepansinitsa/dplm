@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import apiClient from '../services/apiClient';
+import RoomCard from '../components/RoomCard';
 
 function Dashboard() {
   const [reservations, setReservations] = useState([]);
@@ -20,18 +21,13 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <h2>Мои брони</h2>
-      {reservations.length === 0 ? (
-        <p>У вас нет активных броней.</p>
-      ) : (
-        reservations.map(r => (
-          <div key={r.id} className="reservation-card">
-            <h3>{r.hotel.title}</h3>
-            <p><strong>Заезд:</strong> {new Date(r.startDate).toLocaleDateString()}</p>
-            <p><strong>Выезд:</strong> {new Date(r.endDate).toLocaleDateString()}</p>
-            <button>Отменить бронь</button>
-          </div>
-        ))
-      )}
+      {reservations.map((reservation) => (
+        <RoomCard
+          key={reservation.id}
+          room={reservation.hotelRoom}
+          onSelect={() => alert(`Бронь ${reservation.id} уже оформлена`)}
+        />
+      ))}
     </div>
   );
 }

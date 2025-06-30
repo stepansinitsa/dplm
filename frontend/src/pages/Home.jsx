@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import apiClient from '../services/apiClient';
-import HotelCard from '../components/HotelCard';
+import RoomCard from '../components/RoomCard';
 
 function Home() {
-  const [hotels, setHotels] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    async function fetchHotels() {
+    async function fetchRooms() {
       try {
         const res = await apiClient.get('/api/common/hotel-rooms');
-        setHotels(res.data);
+        setRooms(res.data);
       } catch (err) {
-        alert('Ошибка загрузки отелей');
+        alert('Ошибка загрузки номеров');
       }
     }
 
-    fetchHotels();
+    fetchRooms();
   }, []);
 
   return (
     <div className="home-page">
       <h1>Добро пожаловать в HotelHub</h1>
       <div className="hotel-list">
-        {hotels.map(hotel => (
-          <HotelCard key={hotel.id} hotel={hotel} />
+        {rooms.map(room => (
+          <RoomCard
+            key={room.id}
+            room={room}
+            onSelect={() => window.location.href = `/book/${room.id}`}
+          />
         ))}
       </div>
     </div>
